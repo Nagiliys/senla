@@ -1,0 +1,23 @@
+<aura:component implements="flexipage:availableForAllPageTypes">
+<aura:attribute name="result" type="Integer" default=""/>
+    <aura:attribute name="value1" type="integer" default=""/>
+    <aura:attribute name="value2" type="integer" default=""/>
+    
+	<lightning:card footer="" title="Randomizer"> 
+        <lightning:input type="number" label="value1" formatter="number" value="{!v.value1}" class="slds-p-horizontal_small"/>
+		<lightning:input type="number" label="value2" formatter="number" value="{!v.value2}" class="slds-p-horizontal_small"/>
+               
+        <aura:set attribute="actions">
+        	<aura:renderIf isTrue="{!and(not(empty(v.value1)), not(empty(v.value2)))}">
+            		<lightning:button label="Random" onclick="{!c.random}" disabled="false"/>
+            	<aura:set attribute="else">
+      				<lightning:button label="Random" onclick="{!c.random}" disabled="true"/>
+    			</aura:set>
+            </aura:renderIf>
+        </aura:set>          
+    </lightning:card>
+    
+    <lightning:card class="slds-align_absolute-center" title="Result:">
+        	<lightning:badge name="badge" label="{!v.result}"/>
+    </lightning:card>
+</aura:component>
