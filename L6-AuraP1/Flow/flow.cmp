@@ -1,6 +1,8 @@
-<aura:component implements="lightning:availableForFlowScreens,flexipage:availableForRecordHome,force:hasRecordId,force:hasSObjectName" access="global" >
-    <aura:attribute name="recordId" type="String" />
-     <aura:attribute name="sobjecttype" type="String" default="{!v.sObjectName}"/>
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId,force:hasSObjectName" access="global" >
+    <aura:attribute name="bagdeValue" type="String" access="private"/>
     <aura:handler name="init" value="{!this}" action="{!c.init}"/>
-    <lightning:flow aura:id="flowData"/>
+    <lightning:card title="{!$Label.c.update_emails}">  
+            <lightning:flow aura:id="flowData"/>
+        	<lightning:badge name="badge" label="{!v.bagdeValue}"/>
+	</lightning:card>  
 </aura:component>

@@ -1,8 +1,12 @@
 ({
 	random : function(component, event, helper) {      
-        var value1 = parseInt(component.get("{!v.value1}"));
-        var value2 = parseInt(component.get("{!v.value2}"));
-        var value = parseInt(Math.random() * (value1 - value2) + value2)
-        component.set("v.result", (value))
-	}
+        const valueFrom = parseInt(component.get("v.valueFrom")); //typeof valueTo and valueFrom equal string
+        const valueTo = parseInt(component.get("v.valueTo"));	 // i don't know why
+        if (valueFrom < valueTo){
+            const result = parseInt(Math.random() * (valueTo - valueFrom) + valueFrom);
+        component.set("v.result", result);
+        } else {
+            helper.showToast();  
+        }
+}
 })
