@@ -1,25 +1,20 @@
 <aura:component implements="flexipage:availableForAllPageTypes">
- <aura:attribute name="result" type="integer"/>
     <aura:attribute name="valueFrom" type="integer" access="private"/>
     <aura:attribute name="valueTo" type="integer" access="private"/>
+    <aura:attribute name="result" type="integer"/>
+    <aura:attribute name="isActiveBtn" type="boolean" default="true"/>
+    
     <lightning:card title="{!$Label.c.randomizer}"> 
         <lightning:layout multipleRows="true">
             <lightning:layoutItem size="12">
-                <div> 
+                <div onclick="{!c.checkFields}"> 
                     <lightning:input type="number" label="valueFrom" formatter="number" value="{!v.valueFrom}" class="slds-p-horizontal_small"/>      
                     <lightning:input type="number" label="valueTo" formatter="number" value="{!v.valueTo}" class="slds-p-horizontal_small"/>
                  	<div class="slds-p-around_small">
-                        <aura:If isTrue="{! !(empty(v.valueFrom) || empty(v.valueTo)) }">
-                                <lightning:button aura:id="button" label="{!$Label.c.random}" onclick="{!c.random}" disabled="false" class="slds-align_absolute-center"/>
-                            <aura:set attribute="else">
-                                <lightning:button aura:id="button" label="{!$Label.c.random}" onclick="{!c.random}" disabled="true" class="slds-align_absolute-center"/>
-                            </aura:set>
-                        </aura:If>
-                    </div>   
-                             
+                     <lightning:button aura:id="button" label="{!$Label.c.random}" onclick="{!c.random}" disabled="{!v.isActiveBtn}" class="slds-align_absolute-center"/>      
+                    </div>                                
                 </div>
-            </lightning:layoutItem>
-                      
+            </lightning:layoutItem>                     
             <lightning:layoutItem size="12">
                 <lightning:card class="slds-align_absolute-center" title="Result:">
                         <lightning:badge name="badge" label="{!v.result}"/>
