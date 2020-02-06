@@ -1,0 +1,42 @@
+public class AccountTriggerHandler extends TriggerHandler{
+    protected override void beforeInsert(){
+        for (Account account : (List<Account>)trigger.new){
+           account.name=account.name+'beforeInsert';         
+    	}
+	}
+    protected override void afterInsert(){
+        List<Contact> contacts = new List<Contact>();
+        for (Account account : (List<Account>)trigger.new){
+            Contact contact = new Contact();
+            contact.LastName=account.name;
+            contact.AccountId=account.Id;
+            contacts.add(contact);
+    	}
+        insert contacts;
+    }
+    protected override void beforeUpdate(){
+        List<Account> newAccounts = (List<Account>)trigger.new;
+        List<Account> oldAccounts = (List<Account>)trigger.old;
+        List<Account> AccountsWithChangedName = new List<Account>();
+        List<Id> ids = new List<Id>();
+        
+        for(Integer i=0; i<newAccounts.size(); i++){
+            if(newAccounts[i].Name!=oldAccounts[i].Name){
+                AccountsWithChangedName.add(newAccounts[i]);
+                ids.add(newAccounts[i].id);
+            }
+        }
+        
+        List<Contact> contacts = [select Id, AccountId, LastName from Contact where AccountId in :ids];
+        
+        for(Account account : AccountsWithChangedName){
+            for(Contact contact: contacts){
+                if(account.Id==contact.AccountId){
+                    contact.LastName = account.name;
+                }
+            }
+        }
+        
+        update contacts;
+    }
+}
