@@ -11,19 +11,10 @@ public class AccountTriggerHandler extends TriggerHandler{
                         ct.Lastname=acc.Name;
                     }
 
-                    Date today = Date.today();
-                    Date nextNewYear = Date.newInstance(today.year(), 12, 31);
-                    ct.Days_before_new_year__c = today.daysBetween(nextNewYear);
+                    
                     ct.AccountId=acc.id;
                     insert ct;
             }
-            acc.countContacts__c= [select count() from Contact where accountId=:acc.id];
-        }
-    }
-
-    protected override void beforeUpdate(){
-        for(Account acc : (List<Account>)trigger.new){
-            acc.countContacts__c= [select count() from Contact where accountId=:acc.id];
         }
     }
 
