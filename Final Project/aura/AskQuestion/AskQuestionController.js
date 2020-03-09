@@ -10,11 +10,11 @@
         component.set("v.st", "");
     },
     init : function(component, event, helper) {      
-        var action = component.get("c.getAutoCenters");
+        let action = component.get("c.getAutoCenters");
         action.setCallback(this, function(response) {
-            var state = response.getState();
+            const state = response.getState();
             if (state === "SUCCESS") {
-                var items = response.getReturnValue();
+                const items = response.getReturnValue();
 				
                 let autoCenters = [];
                 let item = {};
@@ -30,20 +30,20 @@
         });
         $A.enqueueAction(action);
 	},
-    ask: function (cmp, evt, helper) {
-        var allValid = cmp.find('field').reduce(function (validSoFar, inputCmp) {
+    ask: function (component, event, helper) {
+        let allValid = component.find('field').reduce(function (validSoFar, inputCmp) {
             inputCmp.showHelpMessageIfInvalid();
             return validSoFar && inputCmp.get('v.validity').valid;
         }, true);
         if (allValid) {
-            const fname = cmp.get("v.firstname");
-            const lname = cmp.get("v.lastname");
-            const phone = cmp.get("v.phone");
-            const email = cmp.get("v.email");
-            const idCenter = cmp.get("v.sl");
-            const subject = cmp.get("v.subject");
-            const description = cmp.get("v.description");
-            var action = cmp.get("c.createCase");
+            const fname = component.get("v.firstname");
+            const lname = component.get("v.lastname");
+            const phone = component.get("v.phone");
+            const email = component.get("v.email");
+            const idCenter = component.get("v.sl");
+            const subject = component.get("v.subject");
+            const description = component.get("v.description");
+            let action = component.get("c.createCase");
             action.setParams({
                 firstName : fname, 
                 lastName : lname, 
@@ -54,7 +54,7 @@
                 description : description,
             });
             action.setCallback(this, function(response) {
-                var state = response.getState();
+                const state = response.getState();
                 if (state === "SUCCESS") {
                     helper.showToast('success', $A.get('$Label.c.questionSaved'), $A.get('$Label.c.managerContact'), 5000);
                 }else{

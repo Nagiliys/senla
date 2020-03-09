@@ -2,14 +2,14 @@
     init : function (component, event, helper) {
 		const recordId = component.get('v.contactId');
 
-		var action = component.get("c.isPossibleToCreateFeedback");
+		let action = component.get("c.isPossibleToCreateFeedback");
 		action.setParams({
             ct : recordId, 
         });
         action.setCallback(this, function(response) {
-			var state = response.getState();
+			const state = response.getState();
             if (state === "SUCCESS") {
-				var isPossible = response.getReturnValue();
+				const isPossible = response.getReturnValue();
 				if(isPossible){
 					const flow = component.find("flowData");
 					const param = [{ name : "contactId", type : "String", value: recordId}];
@@ -21,7 +21,6 @@
             } 
 		});
 		$A.enqueueAction(action);
-			  
     },
     finish: function(component, event, helper) {
 		if (event.getParam('status') === "FINISHED") {

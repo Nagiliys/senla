@@ -23,14 +23,14 @@
 
         //equipment
         const family = component.get("v.carName");
-        var actionEquipment = component.get("c.getEquipmentByFamily");
+        const actionEquipment = component.get("c.getEquipmentByFamily");
         actionEquipment.setParams({
             family:family
         });
         actionEquipment.setCallback(this, function(response) {
-            var state = response.getState();
+            const state = response.getState();
             if (state === "SUCCESS") {
-                var cars = response.getReturnValue();
+                const cars = response.getReturnValue();
 				
                 let equipment = [];
                 let car = {};
@@ -47,11 +47,11 @@
         $A.enqueueAction(actionEquipment);
 
         //center
-        var actionCenters = component.get("c.getAutoCenters");
+        let actionCenters = component.get("c.getAutoCenters");
         actionCenters.setCallback(this, function(response) {
-            var state = response.getState();
+            const state = response.getState();
             if (state === "SUCCESS") {
-                var centers = response.getReturnValue();
+                const centers = response.getReturnValue();
                 let autoCenters = [];
                 let center = {};
                 for(let i=0; i<centers.length; i++){
@@ -69,19 +69,19 @@
     closeOrderModal: function(component, event, helper) {  
         component.set("v.isOrderOpen", false);
     },
-    Order: function(cmp, event, helper) {
-        var allValid = cmp.find('field').reduce(function (validSoFar, inputCmp) {
+    Order: function(component, event, helper) {
+        let allValid = component.find('field').reduce(function (validSoFar, inputCmp) {
             inputCmp.showHelpMessageIfInvalid();
             return validSoFar && inputCmp.get('v.validity').valid;
         }, true);
         if (allValid) {
-            const fname = cmp.get("v.firstname");
-            const lname = cmp.get("v.lastname");
-            const phone = cmp.get("v.phone");
-            const email = cmp.get("v.email");
-            const idCenter = cmp.get("v.sl");
-            const idCar = cmp.get("v.el")
-            var action = cmp.get("c.createOrder");
+            const fname = component.get("v.firstname");
+            const lname = component.get("v.lastname");
+            const phone = component.get("v.phone");
+            const email = component.get("v.email");
+            const idCenter = component.get("v.sl");
+            const idCar = component.get("v.el")
+            let action = component.get("c.createOrder");
             action.setParams({
                 firstName : fname, 
                 lastName : lname, 
@@ -91,8 +91,8 @@
                 idCar : idCar,
             });
             action.setCallback(this, function(response) {
-                var state = response.getState();
-                cmp.set("v.isOrderOpen", false);
+                const state = response.getState();
+                component.set("v.isOrderOpen", false);
                 if (state === "SUCCESS") {
                     helper.showToast('success', $A.get('$Label.c.orderSaved'), $A.get('$Label.c.managerContact'), 5000);
                 }else{
@@ -103,9 +103,9 @@
         } 
     },
     updateCurr: function(component, event, helper) {
-        var params = event.getParam('arguments');
+        const params = event.getParam('arguments');
         if (params) {
-            var curr = params.curr;
+            const curr = params.curr;
             component.set("v.curr", curr);
         }
     },

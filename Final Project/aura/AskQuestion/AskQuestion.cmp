@@ -38,8 +38,10 @@
                         </lightning:select> 
                         <lightning:input aura:id="field" label="{#$Label.c.subject}" name="subject" placeholder="{#$Label.c.subject}" required="true" value="{!v.subject}"/>
                         <lightning:textarea aura:id="field" label="{#$Label.c.description}" name="description" placeholder="{#$Label.c.description}" required="true" value="{!v.description}"/>
-                        <lightning:button aura:id="submit" type="submit" label="{#$Label.c.ask}" onclick="{! c.ask }" />
                     </div>
+                    <footer class="slds-modal__footer">
+                        <lightning:button aura:id="submit" variant="brand" type="submit" label="{#$Label.c.ask}" onclick="{! c.ask }" />
+                    </footer>
                 </div>
             </section>
             <div class="slds-backdrop slds-backdrop_open"></div>

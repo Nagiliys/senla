@@ -33,8 +33,11 @@
                                     <option text="{!item.label}" value="{!item.value}"/>
                                 </aura:iteration>
                         </lightning:select> 
-                        <lightning:button aura:id="submit" type="submit" label="{!$Label.c.signUp}" onclick="{! c.signUp }" />
+                        
                     </div>
+                    <footer class="slds-modal__footer">
+                        <lightning:button aura:id="submit" variant="brand" type="submit" label="{!$Label.c.signUp}" onclick="{! c.signUp }" />
+                    </footer>
                 </div>
             </section>
             <div class="slds-backdrop slds-backdrop_open"></div>

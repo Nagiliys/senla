@@ -21,7 +21,7 @@
     <lightning:layout multipleRows="true">          
         <lightning:layoutItem class="slds-p-around_large" size="6" flexibility="auto" >
             <lightning:card title='geely emgrand 7'>
-                <img src="https://nagiliys-dev-ed--c.visualforce.com/resource/1583755220000/gelly_emgrand_7" id ="geely emgrand 7" name="name" onclick="{! c.openModal }"/>
+                <img src="{!$Resource.gelly_emgrand_7}" id ="geely emgrand 7" name="name" onclick="{! c.openModal }"/>
             </lightning:card>
         </lightning:layoutItem>       
         <lightning:layoutItem class="slds-p-around_large" size="6" flexibility="auto">

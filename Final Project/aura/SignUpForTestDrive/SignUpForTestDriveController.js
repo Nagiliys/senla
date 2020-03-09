@@ -10,11 +10,11 @@
         component.set("v.st", "");
     },
     init : function(component, event, helper) {      
-        var action = component.get("c.getAutoCenters");
+        let action = component.get("c.getAutoCenters");
         action.setCallback(this, function(response) {
-            var state = response.getState();
+            const state = response.getState();
             if (state === "SUCCESS") {
-                var items = response.getReturnValue();
+                const items = response.getReturnValue();
 				
                 let autoCenters = [];
                 let item = {};
@@ -30,18 +30,18 @@
         });
         $A.enqueueAction(action);
 	},
-    signUp: function (cmp, evt, helper) {
-        var allValid = cmp.find('field').reduce(function (validSoFar, inputCmp) {
+    signUp: function (component, evt, helper) {
+        let allValid = component.find('field').reduce(function (validSoFar, inputCmp) {
             inputCmp.showHelpMessageIfInvalid();
             return validSoFar && inputCmp.get('v.validity').valid;
         }, true);
         if (allValid) {
-            const fname = cmp.get("v.firstname");
-            const lname = cmp.get("v.lastname");
-            const phone = cmp.get("v.phone");
-            const email = cmp.get("v.email");
-            const idCenter = cmp.get("v.sl");
-            var action = cmp.get("c.createCase");
+            const fname = component.get("v.firstname");
+            const lname = component.get("v.lastname");
+            const phone = component.get("v.phone");
+            const email = component.get("v.email");
+            const idCenter = component.get("v.sl");
+            let action = component.get("c.createCase");
             action.setParams({
                 firstName : fname, 
                 lastName : lname, 
@@ -50,8 +50,8 @@
                 idCenter : idCenter,
             });
             action.setCallback(this, function(response) {
-                var state = response.getState();
-                cmp.set("v.isOpen", false);
+                const state = response.getState();
+                component.set("v.isOpen", false);
                 if (state === "SUCCESS") {
                     helper.showToast('success', $A.get('$Label.c.requestSaved'), $A.get('$Label.c.managerContact'), 5000);
                 }else{
