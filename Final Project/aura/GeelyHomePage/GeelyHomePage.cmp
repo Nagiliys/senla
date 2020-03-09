@@ -1,0 +1,25 @@
+<aura:component implements="flexipage:availableForAllPageTypes" access="global">
+    <aura:handler name="changeCurr" event="c:ChangeCurrencyEvent" action="{!c.updateCurr}"/>
+
+    <c.Toast/>
+    <lightning:layout multipleRows="true" horizontalAlign="center">     
+        <lightning:layoutItem padding="around-medium" size="3" flexibility="auto">
+            <c.ChooseCurrency/>   
+        </lightning:layoutItem>
+        <lightning:layoutItem padding="around-medium" size="3" flexibility="auto">
+            <c.SignUpforTestDrive/>    
+        </lightning:layoutItem>
+        <lightning:layoutItem padding="around-medium" size="3" flexibility="auto">
+            <c.AskQuestion/>    
+        </lightning:layoutItem>
+        <lightning:layoutItem padding="around-medium" size="3" flexibility="auto">
+            <c.SendEmail/>
+        </lightning:layoutItem>
+        <lightning:layoutItem padding="around-medium" size="8" flexibility="auto">
+            <c.Cars aura:id="Cars"/>
+        </lightning:layoutItem>  
+        <lightning:layoutItem padding="around-medium" size="4" flexibility="auto">
+            <c.AutoCenters/>
+        </lightning:layoutItem>        
+    </lightning:layout>
+</aura:component>

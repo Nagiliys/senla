@@ -1,0 +1,18 @@
+<apex:page>
+    <apex:includeLightning />
+
+    <div id="lightning" />
+
+    <script>
+        $Lightning.use("c:GeelyHeader", function() {
+          $Lightning.createComponent("c:AutoCenterInfo",
+              {"centerId":'{!$CurrentPage.parameters.id}'},
+              "lightning",
+              function(cmp) {
+                console.log("Success");
+                // do some stuff
+              }
+          );
+        });
+    </script>
+</apex:page>

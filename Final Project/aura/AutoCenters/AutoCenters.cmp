@@ -1,0 +1,61 @@
+<aura:component controller="AutoCenterController" access="global">
+    <aura:handler name="init" value="{! this }" action="{! c.init }"/>
+
+    <aura:attribute name="mapMarkers" type="Object"/>
+    <aura:attribute name="zoomLevel" type="Integer" />
+    <aura:attribute name="markersTitle" type="String" />
+    <aura:attribute name="fs" type="String"/>
+    <aura:attribute name="FilterOptions" type="List" default="[
+        {'label': 'All', 'value': 'All'},
+        {'label': 'Diller', 'value': 'Diller'},
+        {'label': 'Service', 'value': 'Service'},
+        ]"/>
+    <aura:attribute name="ObjectList" type="String[]"/>
+
+    <aura:attribute name="searchKey" type="String"/>        
+
+    <lightning:card title='{#$Label.c.autoCenter}'>
+        <lightning:layout multipleRows="true">
+            <lightning:layoutItem padding="around-small" size="12" flexibility="auto">
+                <lightning:select name="filterSelection" label="{#$Label.c.filter}" aura:id="FilterList" value="{!v.fs}"
+                                onchange="{!c.reloadPageForFilter}" class="select-auto-width">               
+                    <aura:iteration items="{!v.FilterOptions}" var="item">
+                        <option text="{!item.label}" value="{!item.value}"/>
+                    </aura:iteration>
+                </lightning:select> 
+            </lightning:layoutItem>
+            <lightning:layoutItem padding="around-small" size="12" flexibility="auto">     
+                <lightning:input name="AutoCenterInput"
+                Label="{#$Label.c.autoCenter}"
+                onkeyup="{!c.getObjectList}"
+                value="{!v.searchKey}"
+                placeholder="{#$Label.c.searchAutoCenter}"/>
+
+                <aura:if isTrue="{!not(empty(v.ObjectList))}">
+                <div class="Address-listbox" role="listbox">
+                    <ul class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid" >
+                        <aura:iteration items="{!v.ObjectList}" var="objList">
+                            <li 
+                                onclick="{!c.selectOption}"
+                                data-value="{!objList.id}"
+                                class="slds-listbox__item">
+                                <span class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta"
+                                    role="option">
+                                    <b>{!objList.name}</b>
+                                </span>
+                            </li>
+                        </aura:iteration>
+                    </ul>
+                </div>
+            </aura:if>   
+            </lightning:layoutItem>
+            <lightning:layoutItem padding="around-small" size="12" flexibility="auto">
+                <lightning:map 
+                    mapMarkers="{! v.mapMarkers }" 
+                    zoomLevel="{!v.zoomLevel}" 
+                    markersTitle="{!v.markersTitle}" 
+                    listView="hidden"/>
+            </lightning:layoutItem>
+        </lightning:layout>
+    </lightning:card>
+</aura:component>	

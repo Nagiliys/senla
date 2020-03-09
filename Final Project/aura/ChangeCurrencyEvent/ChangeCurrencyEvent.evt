@@ -1,0 +1,4 @@
+<aura:event type="COMPONENT">
+    <aura:attribute name="curr" type="String"/>
+</aura:event>
+

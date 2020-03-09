@@ -1,0 +1,18 @@
+<apex:page Language="ru">
+    <apex:includeLightning />
+
+    <div id="lightning" />
+
+    <script>
+        $Lightning.use("c:GeelyHeader", function() {
+          $Lightning.createComponent("c:GeelyHomePage",
+              {},
+              "lightning",
+              function(cmp) {
+                console.log("Success");
+                // do some stuff
+              }
+          );
+        });
+    </script>
+</apex:page>

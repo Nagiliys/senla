@@ -1,0 +1,18 @@
+<apex:page Language="en_us">
+    <apex:includeLightning />
+
+    <div id="lightning" />
+
+    <script>
+        $Lightning.use("c:GeelyHeader", function() {
+          $Lightning.createComponent("c:Feedback",
+              {"contactId":'{!$CurrentPage.parameters.id}'},
+              "lightning",
+              function(cmp) {
+                console.log("Success");
+                // do some stuff
+              }
+          );
+        });
+    </script>
+</apex:page>

@@ -1,0 +1,18 @@
+<aura:component>
+    <aura:registerEvent name="changeCurr" type="c:changeCurrencyEvent"/>
+    
+    <aura:attribute name="cs" type="String"/>
+    <aura:attribute name="CurrencyOptions" type="List" default="[
+        {'label': 'BYN', 'value': 'BYN'},
+        {'label': 'USD', 'value': 'USD'},
+        {'label': 'EUR', 'value': 'EUR'},
+        {'label': 'RUB', 'value': 'RUB'},
+        ]"/>
+
+    <lightning:select name="CurrencySelection" label="{#$Label.c.currency}" aura:id="CurrencyList" value="{!v.cs}"
+                onchange="{!c.reloadCurrency}" class="select-auto-width">              
+        <aura:iteration items="{#v.CurrencyOptions}" var="item">
+            <option text="{!item.label}" value="{!item.value}"/>
+        </aura:iteration>
+    </lightning:select>
+</aura:component>

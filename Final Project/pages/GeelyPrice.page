@@ -1,0 +1,13 @@
+<apex:page standardController="PricebookEntry" extensions="PricebookEntryController" renderAs="pdf">
+	<apex:pageBlock title="Geely">
+	</apex:pageBlock>
+	<apex:pageBlock title="Prices for sale on the territory of the Republic of Belarus for cars {!$CurrentPage.parameters.car} in {!$CurrentPage.parameters.curr}">
+		<apex:pageBlockTable border="1" align="center" value="{!PbEs}" var="PricebookEntry" cellpadding="3">
+			<apex:column headerValue="Equipment" value="{!PricebookEntry.product2.name}"/>
+			<apex:column headerValue="Engine" value="{!PricebookEntry.product2.Engine_Capacity__c}"/>
+			<apex:column headerValue="Transmission" value="{!PricebookEntry.product2.Transmission__c}"/>
+			<apex:column headerValue="Drive Unit" value="{!PricebookEntry.product2.Drive_unit__c}"/>
+			<apex:column headerValue="Price" value="{!PricebookEntry.Price__c}"/>
+		</apex:pageBlockTable>
+	</apex:pageBlock>
+</apex:page>
