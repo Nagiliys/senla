@@ -10,6 +10,7 @@
                 <lightning:recordViewForm recordId="{#v.centerId}" objectApiName="AutoCenter__c">
                     <lightning:outputField fieldName="Name" />
                     <lightning:outputField fieldName="Phone__c" />
+                    <lightning:outputField fieldName="schedule__c" />
                     <lightning:outputField fieldName="Location__c" />
             </lightning:recordViewForm>
             </lightning:card>
