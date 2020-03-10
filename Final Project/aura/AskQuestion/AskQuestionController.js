@@ -55,6 +55,7 @@
             });
             action.setCallback(this, function(response) {
                 const state = response.getState();
+                component.set("v.isOpen", false);
                 if (state === "SUCCESS") {
                     helper.showToast('success', $A.get('$Label.c.questionSaved'), $A.get('$Label.c.managerContact'), 5000);
                 }else{
