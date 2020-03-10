@@ -48,7 +48,13 @@ public with sharing class AutoCenterController_Test {
 
     @isTest
     public static void testGetMapAutoCenters_1(){
-        Map<String, String> centerMap = AutoCenterController.getMapAutoCenters('mpany');
+        Map<String, String> centerMap = AutoCenterController.getMapAutoCenters('mpany', 'All');
         System.assertEquals(2, centerMap.size());
+    }
+
+    @isTest
+    public static void testGetMapAutoCenters_2(){
+        Map<String, String> centerMap = AutoCenterController.getMapAutoCenters('mpany', 'Service');
+        System.assertEquals(1, centerMap.size());
     }
 }
