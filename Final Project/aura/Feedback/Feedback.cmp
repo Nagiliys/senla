@@ -5,6 +5,8 @@
     <aura:attribute name="contactId" type="String" default=''/>
     <aura:attribute name="active" type="Boolean" default="true"/>
 
+    <c.Toast/>
+    
     <lightning:layout class='slds-grid_align-center' >
         <lightning:layoutItem flexibility="auto" padding="around-medium">
             <aura:if isTrue="{!v.active}">     

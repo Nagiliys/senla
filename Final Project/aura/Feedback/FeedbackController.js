@@ -7,16 +7,16 @@
             ct : recordId, 
         });
         action.setCallback(this, function(response) {
-			const state = response.getState();
+			let state = response.getState();
             if (state === "SUCCESS") {
-				const isPossible = response.getReturnValue();
+				let isPossible = response.getReturnValue();
 				if(isPossible){
 					const flow = component.find("flowData");
 					const param = [{ name : "contactId", type : "String", value: recordId}];
 					flow.startFlow("leave_feedback", param);
 				}else{
 					component.set('v.active',false);
-					component.set('v.message', 'you have sent the maximum number of feedback');
+					component.set('v.message', $A.get('$Label.c.maxFeedback'));
 				}
             } 
 		});
@@ -25,7 +25,8 @@
     finish: function(component, event, helper) {
 		if (event.getParam('status') === "FINISHED") {
 			component.set('v.active',false);
-			component.set('v.message', 'you send feedback');
-		}
+			component.set('v.message', $A.get('$Label.c.sendFeedback'));
+			helper.showToast('success', $A.get('$Label.c.feedbackAccepted'), $A.get('$Label.c.thanks4Feedback'), 5000);
+        }
 	},
 })
