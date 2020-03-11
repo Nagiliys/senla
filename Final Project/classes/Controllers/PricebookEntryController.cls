@@ -1,14 +1,16 @@
 public without sharing class PricebookEntryController {
     public List<PricebookEntry> PbEs {get; set;}
-    
+
     public PricebookEntryController(ApexPages.StandardController controller){
         String family = ApexPages.CurrentPage().getparameters().get('car');//space %20
-        String curr = ApexPages.CurrentPage().getparameters().get('curr');       
+        String curr = ApexPages.CurrentPage().getparameters().get('curr');
         double rate = 1;
         List<Rates__c> rates = Rates__c.getall().values();
         for(Rates__c r : rates){
             if(r.name == curr){
-                rate = r.Rate__c;
+                if(r.Rate__c!=null){
+                    rate = r.Rate__c;
+                }
                 break;
             }
         }
@@ -20,6 +22,6 @@ public without sharing class PricebookEntryController {
         for(PricebookEntry pb : PbEs){
             pb.product2.name = pb.product2.name.removeStart(family+' ');
             pb.Price__c = pb.UnitPrice * rate;
-        }     
+        }
     }
 }
