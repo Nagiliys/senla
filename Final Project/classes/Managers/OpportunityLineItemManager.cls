@@ -1,11 +1,11 @@
 public without sharing class OpportunityLineItemManager {
-    public static Id createOpportunityLineItem(Id oppId, Integer Quantity, Date ServiceDate, Id Product2Id, Decimal UnitPrice){
+    public static Id createOpportunityLineItem(WrapOpportunityLineItem wOppLI){
         OpportunityLineItem item = new OpportunityLineItem(
-            OpportunityId=oppId,
-            Quantity=Quantity,
-            ServiceDate=ServiceDate,
-            Product2Id=Product2Id,
-            UnitPrice=UnitPrice
+            OpportunityId=wOppLI.opportunityId,
+            Quantity=wOppLI.Quantity,
+            ServiceDate=wOppLI.ServiceDate,
+            Product2Id=wOppLI.Product2Id,
+            UnitPrice=wOppLI.UnitPrice
         );
         insert item;
         return item.id;

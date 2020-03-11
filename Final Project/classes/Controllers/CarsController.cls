@@ -22,21 +22,40 @@ public without sharing class CarsController {
         List<Contact> cts = [select id, Name from Contact where email=:email limit 1];
         List<Lead> lds = [select id, FirstName, LastName from Lead where email=:email limit 1];
 
+        WrapCase wCase = new WrapCase('New', 'Web', 'BYN', null, null, null, empId, 'Order ' + car.Name, null);
+        WrapOpportunity wOpp = new WrapOpportunity(null, Date.today().addMonths(1), 'Prospecting', null, null, empId, book.Id, 'BYN');
+        WrapOpportunityLineItem wOppLI = new WrapOpportunityLineItem(null, 1,  Date.today(), car.Id, PbE.UnitPrice);
         if(lds.isEmpty()){
             if(cts.isEmpty()){
-                Lead ld = LeadManager.createLead(firstName, lastName, 'Client', phone, email, 'Open - Not Contacted', 'BYN');
-                Id oppId = OpportunityManager.createOpportunity(ld.FirstName+' '+ld.LastName+' '+car.Name, Date.today().addMonths(1), 'Prospecting', ld.Id, null, empId, book.Id, 'BYN');
-                CaseManager.createCase('New', 'Web', 'BYN', ld.Id, null, empId, 'Order ' + car.Name, null, oppId);
-                OpportunityLineItemManager.createOpportunityLineItem(oppId, 1, Date.today(), car.Id, PbE.UnitPrice);
+                WrapLead wLead = new WrapLead(firstName, lastName, 'Client', phone, email, 'Open - Not Contacted', 'BYN');
+                Lead ld = LeadManager.createLead(wLead);
+                wOpp.Name = ld.FirstName+' '+ld.LastName+' '+car.Name;
+                wOpp.leadId = ld.Id;
+                Id oppId = OpportunityManager.createOpportunity(wOpp);
+                wCase.leadId = ld.Id;
+                wCase.opportunityId = oppId;
+                CaseManager.createCase(wCase);
+                wOppLI.OpportunityId=oppId;
+                OpportunityLineItemManager.createOpportunityLineItem(wOppLI);
             }else{
-                Id oppId = OpportunityManager.createOpportunity(cts[0].Name+' '+car.Name, Date.today().addMonths(1), 'Prospecting', null, cts[0].Id, empId, book.Id, 'BYN');
-                CaseManager.createCase('New', 'Web', 'BYN', null, cts[0].Id, empId, 'Order ' + car.Name, null, oppId);
-                OpportunityLineItemManager.createOpportunityLineItem(oppId, 1, Date.today(), car.Id, PbE.UnitPrice);
+                wOpp.Name = cts[0].Name+' '+car.Name;
+                wOpp.contactId = cts[0].Id;
+                Id oppId = OpportunityManager.createOpportunity(wOpp);
+                wCase.contactId=cts[0].Id;
+                wCase.opportunityId = oppId;
+                CaseManager.createCase(wCase);
+                wOppLI.OpportunityId=oppId;
+                OpportunityLineItemManager.createOpportunityLineItem(wOppLI);
             }
         }else{
-            Id oppId = OpportunityManager.createOpportunity(lds[0].FirstName+' '+lds[0].LastName+' '+car.Name, Date.today().addMonths(1), 'Prospecting', lds[0].Id, null, empId, book.Id, 'BYN');
-            CaseManager.createCase('New', 'Web', 'BYN', lds[0].Id, null, empId, 'Order ' + car.Name, null, oppId);
-            OpportunityLineItemManager.createOpportunityLineItem(oppId, 1, Date.today(), car.Id, PbE.UnitPrice);
+            wOpp.Name = lds[0].FirstName+' '+lds[0].LastName+' '+car.Name;
+            wOpp.leadId = lds[0].Id;
+            Id oppId = OpportunityManager.createOpportunity(wOpp);
+            wCase.leadId=lds[0].Id;
+            wCase.opportunityId = oppId;
+            CaseManager.createCase(wCase);
+            wOppLI.OpportunityId=oppId;
+            OpportunityLineItemManager.createOpportunityLineItem(wOppLI);
         }
     }
 }

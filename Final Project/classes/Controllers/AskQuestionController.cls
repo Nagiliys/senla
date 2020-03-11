@@ -12,15 +12,21 @@ public without sharing class AskQuestionController {
         List<Contact> cts = [select id from Contact where email=:email limit 1];
         List<Lead> lds = [select id from Lead where email=:email limit 1];
 
+        WrapCase wCase = new WrapCase('New', 'Web', 'BYN', null, null, null, empId, subject, description);
+
         if(lds.isEmpty()){
             if(cts.isEmpty()){
-                Lead ld = LeadManager.createLead(firstName, lastName, 'Client', phone, email, 'Open - Not Contacted', 'BYN');
-                CaseManager.createCase('New', 'Web', 'BYN', ld.Id, null, empId, subject, description, null);
+                WrapLead wLead = new WrapLead(firstName, lastName, 'Client', phone, email, 'Open - Not Contacted', 'BYN');
+                Lead ld = LeadManager.createLead(wLead);
+                wCase.LeadId=ld.Id;
+                CaseManager.createCase(wCase);
             }else{
-                CaseManager.createCase('New', 'Web', 'BYN', null, cts[0].Id, empId, subject, description, null);
+                wCase.contactId=cts[0].Id;
+                CaseManager.createCase(wCase);
             }
         }else{
-            CaseManager.createCase('New', 'Web', 'BYN', lds[0].Id, null, empId, subject, description, null);
+            wCase.LeadId=lds[0].Id;
+            CaseManager.createCase(wCase);
         }
     }
 }

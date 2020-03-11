@@ -1,15 +1,15 @@
 public without sharing class CaseManager {
-    public static Id createCase(String Status, String Origin, String CurrencyIsoCode,Id ld, Id ct, Id empId, String Subject, String Description, ID oppId){
+    public static Id createCase(WrapCase wCase){
         Case cs = new Case(
-            Status=Status,
-            Origin=Origin,
-            CurrencyIsoCode=CurrencyIsoCode,
-            employee__c=empId,
-            ContactId=ct,
-            Lead__c=ld,
-            Subject=Subject,
-            Description=Description,
-            Opportunity__c=oppId
+            Status=wCase.Status,
+            Origin=wCase.Origin,
+            CurrencyIsoCode=wCase.CurrencyIsoCode,
+            employee__c=wCase.employeeId,
+            ContactId=wCase.contactId,
+            Lead__c=wCase.leadId,
+            Subject=wCase.Subject,
+            Description=wCase.Description,
+            Opportunity__c=wCase.opportunityId
         );
         insert cs;
         return cs.Id;

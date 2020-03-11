@@ -7,22 +7,24 @@ public without sharing class TestDriveController {
     @AuraEnabled
     public static void createCase(String firstName, String lastName, String phone, String email, String idCenter){
         Id empId = EmployeeManager.getFreeEmployeeByIdCenter(idCenter);
-
         //List<List<sObject>> searchList = [find :email in email fields returning Contact(Id), Lead(Id)];
         List<Contact> cts = [select id from Contact where email=:email limit 1];
         List<Lead> lds = [select id from Lead where email=:email limit 1];
-        system.debug('contacts: '+cts);
-        system.debug('leads: '+lds);
+        WrapCase wCase = new WrapCase('New', 'Web', 'BYN', null, null, null, empId, 'TestDrive', null);
 
         if(lds.isEmpty()){
             if(cts.isEmpty()){
-                Lead ld = LeadManager.createLead(firstName, lastName, 'Client', phone, email, 'Open - Not Contacted', 'BYN');
-                CaseManager.createCase('New', 'Web', 'BYN', ld.Id, null, empId, 'Test Drive', null, null);
+                WrapLead wLead = new WrapLead(firstName, lastName, 'Client', phone, email, 'Open - Not Contacted', 'BYN');
+                Lead ld = LeadManager.createLead(wLead);
+                wCase.LeadId=ld.Id;
+                CaseManager.createCase(wCase);
             }else{
-                CaseManager.createCase('New', 'Web', 'BYN', null, cts[0].Id, empId, 'Test Drive', null, null);
+                wCase.contactId=cts[0].Id;
+                CaseManager.createCase(wCase);
             }
         }else{
-            CaseManager.createCase('New', 'Web', 'BYN', lds[0].Id, null, empId, 'Test Drive', null, null);
+            wCase.LeadId=lds[0].Id;
+            CaseManager.createCase(wCase);
         }
     }
 }
