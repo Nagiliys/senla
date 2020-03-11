@@ -1,14 +1,4 @@
 ({
-    OpenModal : function(component, event, helper) {
-        component.set("v.isOpen", true);
-    },
-
-    closeModal : function(component, event, helper) {
-        component.set("v.isOpen", false);
-        component.set("v.StaffValue",[]);
-        component.set("v.sl", "");
-        component.set("v.st", "");
-    },
     init : function(component, event, helper) {      
         let action = component.get("c.getAutoCenters");
         action.setCallback(this, function(response) {
@@ -25,11 +15,18 @@
                     };
                     autoCenters.push(item);
                 }
-                component.set("v.ServiceValue",autoCenters);  
+                component.set("v.serviceList",autoCenters);  
             } 
         });
         $A.enqueueAction(action);
 	},
+    OpenModal : function(component, event, helper) {
+        component.set("v.isOpen", true);
+    },
+    closeModal : function(component, event, helper) {
+        component.set("v.isOpen", false);
+        component.set("v.serviceValue", "");
+    },
     signUp: function (component, evt, helper) {
         let allValid = component.find('field').reduce(function (validSoFar, inputCmp) {
             inputCmp.showHelpMessageIfInvalid();
@@ -40,7 +37,7 @@
             const lname = component.get("v.lastname");
             const phone = component.get("v.phone");
             const email = component.get("v.email");
-            const idCenter = component.get("v.sl");
+            const idCenter = component.get("v.serviceValue");
             let action = component.get("c.createCase");
             action.setParams({
                 firstName : fname, 

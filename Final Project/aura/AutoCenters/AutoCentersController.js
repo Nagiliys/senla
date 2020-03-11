@@ -14,10 +14,10 @@
         component.set('v.zoomLevel', 6);
         component.set('v.markersTitle', 'Centers');
     },
-    reloadPageForFilter : function (component, event, helper) {     
+    reloadMapForFilter : function (component, event, helper) {     
         let action = component.get("c.getAutoCentersByRecordType");
         action.setParams({
-			RT : component.get("v.fs")
+			RT : component.get("v.filterValue")
         });
         action.setCallback(this, function(response) {
             const state = response.getState();
@@ -29,15 +29,15 @@
         });
         $A.enqueueAction(action);
     }, 
-    getObjectList: function(component, event, helper) {
+    getCenterList: function(component, event, helper) {
         const serString = component.get("v.searchKey");
         if(!serString){
-            component.set('v.ObjectList',null);
+            component.set('v.centerList',null);
             return;
         }
 
         let action = component.get("c.getMapAutoCenters");
-        const recordType = component.get("v.fs");
+        const recordType = component.get("v.filterValue");
         action.setParams({
             searchString: serString,
             RT:recordType
@@ -57,10 +57,10 @@
                     }
                 }
                 if(!component.get("v.searchKey")){
-                    component.set('v.ObjectList',null);
+                    component.set('v.centerList',null);
                     return;
                 }else{
-                    component.set("v.ObjectList", objects);
+                    component.set("v.centerList", objects);
                 }
             }
         });

@@ -1,14 +1,4 @@
 ({
-    OpenModal : function(component, event, helper) {
-        component.set("v.isOpen", true);
-    },
-
-    closeModal : function(component, event, helper) {
-        component.set("v.isOpen", false);
-        component.set("v.StaffValue",[]);
-        component.set("v.sl", "");
-        component.set("v.st", "");
-    },
     init : function(component, event, helper) {      
         let action = component.get("c.getAutoCenters");
         action.setCallback(this, function(response) {
@@ -25,11 +15,20 @@
                     };
                     autoCenters.push(item);
                 }
-                component.set("v.ServiceValue",autoCenters);  
+                component.set("v.autoCenters",autoCenters);  
             } 
         });
         $A.enqueueAction(action);
 	},
+    OpenModal : function(component, event, helper) {
+        component.set("v.isOpen", true);
+    },
+
+    closeModal : function(component, event, helper) {
+        component.set("v.isOpen", false);
+        component.set("v.StaffValue",[]);
+        component.set("v.centerItem", "");
+    },
     ask: function (component, event, helper) {
         let allValid = component.find('field').reduce(function (validSoFar, inputCmp) {
             inputCmp.showHelpMessageIfInvalid();
@@ -40,7 +39,7 @@
             const lname = component.get("v.lastname");
             const phone = component.get("v.phone");
             const email = component.get("v.email");
-            const idCenter = component.get("v.sl");
+            const idCenter = component.get("v.centerItem");
             const subject = component.get("v.subject");
             const description = component.get("v.description");
             let action = component.get("c.createCase");
@@ -60,10 +59,9 @@
                     helper.showToast('success', $A.get('$Label.c.questionSaved'), $A.get('$Label.c.managerContact'), 5000);
                 }else{
                     helper.showToast('error', $A.get('$Label.c.errorOccurred'), $A.get('$Label.c.tryLater'), 5000);
-                } 
+                }
             });
             $A.enqueueAction(action);
-        } else {
         }
     }
 })

@@ -20,8 +20,6 @@
     openOrderModal: function(component, event, helper) {  
         component.set("v.isOpen", false);
         component.set("v.isOrderOpen", true);
-
-        //equipment
         const family = component.get("v.carName");
         const actionEquipment = component.get("c.getEquipmentByFamily");
         actionEquipment.setParams({
@@ -41,7 +39,7 @@
                     };
                     equipment.push(car);
                 }
-                component.set("v.EquipmentValue", equipment);  
+                component.set("v.equipmentList", equipment);  
             } 
         });
         $A.enqueueAction(actionEquipment);
@@ -61,7 +59,7 @@
                     };
                     autoCenters.push(center);
                 }
-                component.set("v.ServiceValue", autoCenters);
+                component.set("v.servicelist", autoCenters);
             } 
         });
         $A.enqueueAction(actionCenters);
@@ -79,8 +77,8 @@
             const lname = component.get("v.lastname");
             const phone = component.get("v.phone");
             const email = component.get("v.email");
-            const idCenter = component.get("v.sl");
-            const idCar = component.get("v.el")
+            const idCenter = component.get("v.serviceValue");
+            const idCar = component.get("v.equipmentValue")
             let action = component.get("c.createOrder");
             action.setParams({
                 firstName : fname, 
