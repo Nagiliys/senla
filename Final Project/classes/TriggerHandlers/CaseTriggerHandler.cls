@@ -1,47 +1,54 @@
 public class CaseTriggerHandler extends TriggerHandler{
     protected override void beforeInsert(){
-        String email;
-        String name;
-        Lead[] lds;
-        Lead ld;
-        Contact[] cts;
-        Contact ct;
-        List<employee__c> emp;
-        Employee__c target;
+        List<String> emails = new List<String>();
         for(Case cs : (List<Case>)trigger.new){
             if(cs.SuppliedName!=null && cs.SuppliedEmail!=null){
-                emp = [select id, (select id from cases__r where Status!='Closed') from employee__c];
-                target = emp[0];
-                integer min = emp[0].cases__r.size()+1;
-                for(employee__c e : emp){
-                    if(min > e.cases__r.size()){
-                        min = e.cases__r.size();
-                        target = e;
+                emails.add(cs.SuppliedEmail);
+            }
+        }
+        if(emails.isEmpty()){
+            return;
+        }
+        Lead lead;
+        List<Lead> newLeads = new List<Lead>();
+        String idEmp = EmployeeManager.getFreeEmployee();
+        List<Lead> leads = [select Id, email from Lead where email in :emails];
+        List<Contact> contacts = [select Id, email from Contact where email in :emails];
+        boolean isInsert = false;
+        for(Case cs : (List<Case>)trigger.new){
+            isInsert = false;
+            if(cs.SuppliedName!=null && cs.SuppliedEmail!=null){
+                for(Lead ld : leads){
+                    if(cs.SuppliedEmail==ld.email){
+                        cs.Lead__c=ld.Id;
+                        isInsert=true;
+                        break;
                     }
-                }                
-                name = cs.SuppliedName;
-                email=cs.SuppliedEmail;
-                //emp?
-                cts = [select id from Contact where email=:email];
-                if(cts.size()>0){
-                    ct=cts[0];
-                    cs.ContactId=ct.Id;
-                    cs.employee__c=target.Id;
-                }else{
-                    lds = [select id from Lead where email=:email];
-                    if(lds.size()>0){
-                        ld=lds[0];
-                        cs.employee__c=target.Id;
+                }
+                if(isInsert){break;}
+                for(Contact ct : contacts){
+                    if(cs.SuppliedEmail==ct.email){
+                        cs.ContactId=ct.Id;
+                        isInsert=true;
+                        break;
+                    }
+                }
+                if(isInsert){break;}
+                lead = new Lead(
+                    LastName = cs.SuppliedName,
+                    company = 'Client',
+                    email = cs.SuppliedEmail
+                );
+                newLeads.add(lead);
+            }
+        }
+        insert newLeads;
+        for(Case cs : (List<Case>)trigger.new){
+            if(cs.SuppliedName!=null && cs.SuppliedEmail!=null){
+                for(Lead ld : newLeads){
+                    if(cs.SuppliedEmail==ld.email){
                         cs.Lead__c=ld.Id;
-                    }else{
-                        ld=new Lead();
-                        ld.LastName=name;
-                        ld.email=email;
-                        ld.company='client';
-                        ld.status='Open - Not Contacted';
-                        insert ld;
-                        cs.employee__c=target.Id;
-                        cs.Lead__c=ld.Id;
+                        break;
                     }
                 }
             }
