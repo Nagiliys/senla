@@ -6,7 +6,7 @@ public with sharing class OpportunityTriggerHandler_Test {
             name = 'test opp',
             CloseDate=Date.today().addMonths(1),
             StageName='Prospecting'
-        );//name close date stage
+        );
         insert opp;
         Case cs = new Case(
             status='New',
@@ -27,6 +27,7 @@ public with sharing class OpportunityTriggerHandler_Test {
             status='Open Not Contacted'
         );
         insert ld;
+        
         Opportunity opp2 = new Opportunity(
             name = 'test opp 2',
             CloseDate=Date.today().addMonths(1),
@@ -34,12 +35,21 @@ public with sharing class OpportunityTriggerHandler_Test {
             Lead__c=ld.id
         );
         insert opp2;
+        Case cs2 = new Case(
+            status='New',
+            origin='Web',
+            Opportunity__c=opp2.id,
+            Lead__c=ld.Id
+        );
+        insert cs2;
         Opportunity opp = [select StageName, Lead__c from Opportunity limit 1];
-        Test.startTest();
         opp.Lead__c=ld.Id;
         opp.StageName='Closed Won';
+
+        Test.startTest();
         update opp;
         Test.stopTest();
+
         Case cs = [select status from Case limit 1];
         system.assertEquals('Closed', cs.status);
         List<Contact> cts = [select id from Contact];
@@ -58,11 +68,13 @@ public with sharing class OpportunityTriggerHandler_Test {
         );
         insert ct;
         Opportunity opp = [select StageName, Contact__c from Opportunity limit 1];
-        Test.startTest();
         opp.Contact__c=ct.Id;
         opp.StageName='Closed Won';
+
+        Test.startTest();
         update opp;
         Test.stopTest();
+
         Case cs = [select status from Case limit 1];
         system.assertEquals('Closed', cs.status);
     }
@@ -70,19 +82,14 @@ public with sharing class OpportunityTriggerHandler_Test {
     @IsTest
     static void testClosedLost_1(){
         Opportunity opp = [select StageName from Opportunity limit 1];
-        Test.startTest();
         opp.StageName='Closed Lost';
+        
+        Test.startTest();
         update opp;
         Test.stopTest();
+
         Case cs = [select status from Case limit 1];
         system.assertEquals('Closed', cs.status);
         
-    }
-
-    @isTest
-    static void testUndeleteTriggerHandler(){
-        Opportunity opp = [select Id from Opportunity limit 1];
-        delete opp;
-		undelete [SELECT Id FROM Opportunity WHERE IsDeleted = true ALL ROWS];        
     }
 }

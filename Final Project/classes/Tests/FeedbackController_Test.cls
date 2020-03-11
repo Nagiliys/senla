@@ -5,12 +5,15 @@ public class FeedbackController_Test {
         Contact ct = new Contact(
             lastname='name'
         );
-        Test.startTest();
         insert ct;
+
+        Test.startTest();
         Boolean isPossible = FeedbackController.isPossibleToCreateFeedback(ct.Id);
         Test.stopTest();
+        
         system.assertEquals(false, isPossible);
     }
+
     @IsTest
     static void testIsPossibleToCreateFeedback_2(){
         Contact ct = new Contact(
@@ -24,9 +27,11 @@ public class FeedbackController_Test {
             Contact__c=ct.id
         );
         insert opp;
+
         Test.startTest();
         Boolean isPossible = FeedbackController.isPossibleToCreateFeedback(ct.Id);
         Test.stopTest();
+        
         system.assertEquals(true, isPossible);
     }
 }

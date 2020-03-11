@@ -3,30 +3,36 @@ public with sharing class CarsController_Test {
     @TestSetup
     public static void setup(){
         id rtDiller = Schema.sObjectType.AutoCenter__c.getRecordTypeInfosByName().get('Diller').getRecordTypeId();
-        id rtService = Schema.sObjectType.AutoCenter__c.getRecordTypeInfosByName().get('Service').getRecordTypeId();
-        AutoCenter__c centerDiller = new AutoCenter__c();
-        centerDiller.recordtypeid=rtDiller;
-        centerDiller.Name='company diller';
-        centerDiller.City__c='Grodno';
+        AutoCenter__c centerDiller = new AutoCenter__c(
+            recordtypeid=rtDiller,
+            Name='company diller',
+            City__c='Grodno'
+        );
         insert centerDiller;
-        employee__c emp = new employee__c();
-        emp.name='worker';
-        emp.AutoCenter__c=centerDiller.id;
+        employee__c emp = new employee__c(
+            name='worker',
+            AutoCenter__c=centerDiller.id
+        );
         insert emp;
-        AutoCenter__c centerService = new AutoCenter__c();
-        centerService.recordtypeid=rtService;
-        centerService.Name='company service';
-        centerService.City__c='Minsk';
+        id rtService = Schema.sObjectType.AutoCenter__c.getRecordTypeInfosByName().get('Service').getRecordTypeId();
+        AutoCenter__c centerService = new AutoCenter__c(
+            recordtypeid=rtService,
+            Name='company service',
+            City__c='Minsk'
+        );
         insert centerService;
-        Product2 pr = new Product2();
-        pr.Name='geely atlas base';
-        pr.family='geely atlas';
-        pr.ProductCode='gab';
+
+        Product2 pr = new Product2(
+            Name='geely atlas base',
+            family='geely atlas',
+            ProductCode='gab'
+        );
         insert pr;
-        Product2 pr2 = new Product2();
-        pr2.Name='geely coolray base';
-        pr.family='geely coolray';
-        pr2.ProductCode='gcb';
+        Product2 pr2 = new Product2(
+            Name='geely coolray base',
+            family='geely coolray',
+            ProductCode='gcb'
+        );
         insert pr2;
 
 
@@ -40,16 +46,18 @@ public with sharing class CarsController_Test {
             UnitPrice = 10000, IsActive = true);
         insert standardPrice2;
 
-        Pricebook2 pb = new Pricebook2();
-        pb.name='Standard Geely Price Book';
-        pb.isactive=true;
+        Pricebook2 pb = new Pricebook2(
+            name='Standard Geely Price Book',
+            isactive=true
+        );
         insert pb;
-        pricebookentry pbe= new pricebookentry();
-        pbe.CurrencyIsoCode='BYN';
-        pbe.Pricebook2id=pb.id;
-        pbe.Product2id=pr.id;
-        pbe.Unitprice=1234;
-        pbe.isactive = true;
+        pricebookentry pbe= new pricebookentry(
+            CurrencyIsoCode='BYN',
+            Pricebook2id=pb.id,
+            Product2id=pr.id,
+            Unitprice=1234,
+            isactive = true
+        );
         insert pbe;
     }
 
@@ -58,6 +66,7 @@ public with sharing class CarsController_Test {
         Test.starttest();
         List<AutoCenter__c> ac = CarsController.getAutoCenters();
         Test.stoptest();
+
         system.assertEquals(1, ac.size());
     }
     
@@ -66,6 +75,7 @@ public with sharing class CarsController_Test {
         Test.starttest();
         List<Product2> pr = CarsController.getEquipmentByFamily('geely atlas');
         Test.stoptest();
+
         system.assertEquals(1, pr.size());
     }
 
@@ -79,9 +89,11 @@ public with sharing class CarsController_Test {
         Product2 car = [select id from Product2 limit 1];
         String idCenter = center.Id;
         String idCar = car.Id;
+
         Test.starttest();
         CarsController.createOrder(firstName, lastName, phone, email, idCenter, idCar);
         Test.stoptest();
+
         list<Lead> lds = [select id, email from Lead];
         List<Case> cases = [select Lead__c from case];
         system.assertEquals(1, cases.size());
@@ -108,10 +120,11 @@ public with sharing class CarsController_Test {
             status='Open Not Contacted'
         );
         insert ld;
+
         Test.starttest();
         CarsController.createOrder(firstName, lastName, phone, email, idCenter, idCar);
         Test.stoptest();
-        //list<Lead> lds = [select id, email from Lead];
+
         List<Case> cases = [select Lead__c from case];
         system.assertEquals(1, cases.size());
         system.assertEquals(ld.Id, cases[0].Lead__c);
@@ -134,10 +147,11 @@ public with sharing class CarsController_Test {
             email=email
         );
         insert ct;
+
         Test.starttest();
         CarsController.createOrder(firstName, lastName, phone, email, idCenter, idCar);
         Test.stoptest();
-        //list<Lead> lds = [select id, email from Lead];
+
         List<Case> cases = [select ContactId from case];
         system.assertEquals(1, cases.size());
         system.assertEquals(ct.Id, cases[0].ContactId);
