@@ -1,18 +1,12 @@
 <aura:component controller="CarsController">
     <aura:attribute name="isOpen" type="boolean" default="false"/>
     <aura:attribute name="isOrderOpen" type="boolean" default="false"/>
-    <aura:attribute name="carName" type="String"/>
     <aura:attribute name="carDescription" type="String"/>
     <aura:attribute name="car" type="String"/>
     <aura:attribute name="curr" type="String" default="BYN"/>
-    <aura:attribute name="serviceValue" type="String"/>
-    <aura:attribute name="equipmentValue" type="String"/>
-    <aura:attribute name="serviceList" type="List" default=""/>
-    <aura:attribute name="equipmentList" type="List" default=""/>
-    <aura:attribute name="firstname" type="String"/>
-    <aura:attribute name="lastname" type="String"/>
-    <aura:attribute name="phone" type="String"/>
-    <aura:attribute name="email" type="String"/>
+    <aura:attribute name="centerslist" type="List" default=""/>
+    <aura:attribute name="equipmentsList" type="List" default=""/>
+    <aura:attribute name="wrap" type="object"/>
 
     <aura:handler name="init" value="{!this}" action="{!c.init}"/>
     
@@ -53,7 +47,7 @@
                                               alternativeText="close"
                                               variant="bare-inverse"
                                               class="slds-modal__close"/>
-                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!v.carName}</h2>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!v.car}</h2>
                     </header>
                     <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
                         <p>{!v.carDescription}</p>
@@ -82,21 +76,21 @@
                         <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!v.carName}</h2>
                     </header>
                     <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
-                        <lightning:input aura:id="field" label="{#$Label.c.firstName}" name="firstname" placeholder="{#$Label.c.firstName}" required="true" value="{!v.firstname}"/>
-                        <lightning:input aura:id="field" label="{#$Label.c.lastName}" name="lastname" placeholder="{#$Label.c.lastName}" required="true" value="{!v.lastname}"/>
-                        <lightning:input aura:id="field" type="tel" label="{#$Label.c.phone}" name="phone" placeholder="+375(**)**-**-***" required="true" value="{!v.phone}"/>
-                        <lightning:input aura:id="field" type="email" label="Email" name="email" placeholder="example@gmail.com" required="true" value="{!v.email}" />
-                        <lightning:select name="Service" label="{#$Label.c.service}" aura:id="field" value="{!v.serviceValue}"
+                        <lightning:input aura:id="field" label="{#$Label.c.firstName}" name="firstname" placeholder="{#$Label.c.firstName}" required="true" value="{!v.wrap.firstname}"/>
+                        <lightning:input aura:id="field" label="{#$Label.c.lastName}" name="lastname" placeholder="{#$Label.c.lastName}" required="true" value="{!v.wrap.lastname}"/>
+                        <lightning:input aura:id="field" type="tel" label="{#$Label.c.phone}" name="phone" placeholder="+375(**)**-**-***" required="true" value="{!v.wrap.phone}"/>
+                        <lightning:input aura:id="field" type="email" label="Email" name="email" placeholder="example@gmail.com" required="true" value="{!v.wrap.email}" />
+                        <lightning:select name="Service" label="{#$Label.c.service}" aura:id="field" value="{!v.wrap.idCenter}"
                                 class="select-auto-width" required="true">      
                                 <option text="-None-" value=""/>
-                                <aura:iteration items="{!v.serviceList}" var="item">
+                                <aura:iteration items="{!v.centerslist}" var="item">
                                     <option text="{!item.label}" value="{!item.value}"/>
                                 </aura:iteration>
                         </lightning:select>
-                        <lightning:select name="Equipment" label="{#$Label.c.equipment}" aura:id="field" value="{!v.equipmentValue}"
+                        <lightning:select name="Equipment" label="{#$Label.c.equipment}" aura:id="field" value="{!v.wrap.idCar}"
                                 class="select-auto-width" required="true">      
                                 <option text="-None-" value=""/>
-                                <aura:iteration items="{!v.equipmentList}" var="item2">
+                                <aura:iteration items="{!v.equipmentsList}" var="item2">
                                     <option text="{!item2.label}" value="{!item2.value}"/>
                                 </aura:iteration>
                         </lightning:select> 

@@ -1,12 +1,7 @@
 <aura:component controller='TestDriveController'>
     <aura:attribute name="isOpen" type="Boolean" default="false" access="private" />
-    <aura:attribute name="serviceValue" type="String"/>
     <aura:attribute name="serviceList" type="List" default=""/>
-    <aura:attribute name="firstname" type="String"/>
-    <aura:attribute name="lastname" type="String"/>
-    <aura:attribute name="phone" type="String"/>
-    <aura:attribute name="email" type="String"/>
-
+    <aura:attribute name="wrap" type="object"/>
     <aura:handler name="init" value="{!this}" action="{!c.init}"/>
 
     <lightning:button variant="brand" label="{#$Label.c.signUpForTestDrive}" title="Brand action" onclick="{! c.OpenModal }" />
@@ -23,11 +18,11 @@
                         <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{#$Label.c.signUpForTestDrive}</h2>
                     </header>
                     <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
-                        <lightning:input aura:id="field" label="{#$Label.c.firstName}" name="firstname" placeholder="{#$Label.c.firstName}" required="true" value="{!v.firstname}"/>
-                        <lightning:input aura:id="field" label="{#$Label.c.lastName}" name="lastname" placeholder="{#$Label.c.lastName}" required="true" value="{!v.lastname}"/>
-                        <lightning:input aura:id="field" type="tel" label="{#$Label.c.phone}" name="phone" placeholder="+375(**)**-**-***" required="true" value="{!v.phone}"/>
-                        <lightning:input aura:id="field" type="email" label="Email" name="email" placeholder="example@gmail.com" required="true" value="{!v.email}" />
-                        <lightning:select name="Service" label="{!$Label.c.service}" aura:id="field" value="{!v.serviceValue}"
+                        <lightning:input aura:id="field" label="{#$Label.c.firstName}" name="firstname" placeholder="{#$Label.c.firstName}" required="true" value="{!v.wrap.firstname}"/>
+                        <lightning:input aura:id="field" label="{#$Label.c.lastName}" name="lastname" placeholder="{#$Label.c.lastName}" required="true" value="{!v.wrap.lastname}"/>
+                        <lightning:input aura:id="field" type="tel" label="{#$Label.c.phone}" name="phone" placeholder="+375(**)**-**-***" required="true" value="{!v.wrap.phone}"/>
+                        <lightning:input aura:id="field" type="email" label="Email" name="email" placeholder="example@gmail.com" required="true" value="{!v.wrap.email}" />
+                        <lightning:select name="Service" label="{!$Label.c.service}" aura:id="field" value="{!v.wrap.idCenter}"
                                 class="select-auto-width" required="true">      
                                 <option text="-None-" value=""/>
                                 <aura:iteration items="{!v.serviceList}" var="item">
