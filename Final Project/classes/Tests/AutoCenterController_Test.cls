@@ -35,7 +35,7 @@ public with sharing class AutoCenterController_Test {
         );
         insert test;
 
-        AutoCenter__c center = AutoCenterController.getAutoCentersById(test.Id);
+        AutoCenter__c center = AutoCenterController.getAutoCenterById(test.Id);
 
         System.assertEquals(test.Name, center.Name);
     }

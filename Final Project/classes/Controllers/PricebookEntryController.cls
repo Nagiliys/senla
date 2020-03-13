@@ -4,6 +4,7 @@ public without sharing class PricebookEntryController {
     public PricebookEntryController(ApexPages.StandardController controller){
         String family = ApexPages.CurrentPage().getparameters().get('car');//space %20
         String curr = ApexPages.CurrentPage().getparameters().get('curr');
+        
         double rate = 1;
         List<Rates__c> rates = Rates__c.getall().values();
         for(Rates__c r : rates){
@@ -14,6 +15,7 @@ public without sharing class PricebookEntryController {
                 break;
             }
         }
+
         PbEs = [select product2.name, product2.Engine_Capacity__c, product2.Transmission__c, product2.Drive_unit__c, UnitPrice, Price__c
                 from PricebookEntry 
                 where Pricebook2.name='Standard Geely Price Book' 

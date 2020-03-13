@@ -4,8 +4,8 @@ public class AutoCenterController {
         return AutoCenterManager.getAutoCenters();
     }
     @AuraEnabled(cacheable=true)
-    public static AutoCenter__c getAutoCentersById(Id id){
-        return AutoCenterManager.getAutoCentersById(id);
+    public static AutoCenter__c getAutoCenterById(Id id){
+        return AutoCenterManager.getAutoCenterById(id);
     }
     @AuraEnabled(cacheable=true)
     public static List<AutoCenter__c> getAutoCentersByRecordType(String RT){

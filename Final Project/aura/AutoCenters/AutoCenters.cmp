@@ -17,7 +17,7 @@
         <lightning:layout multipleRows="true">
             <lightning:layoutItem padding="around-small" size="12" flexibility="auto">
                 <lightning:select name="filterSelection" label="{#$Label.c.filter}" aura:id="FilterList" value="{!v.filterValue}"
-                                onchange="{!c.reloadPageForFilter}" class="select-auto-width">               
+                                onchange="{!c.reloadMapForFilter}" class="select-auto-width">               
                     <aura:iteration items="{!v.FilterOptions}" var="item">
                         <option text="{!item.label}" value="{!item.value}"/>
                     </aura:iteration>
@@ -35,7 +35,7 @@
                     <ul class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid" >
                         <aura:iteration items="{!v.centerList}" var="objList">
                             <li 
-                                onclick="{!c.selectOption}"
+                                onclick="{!c.selectCenter}"
                                 data-value="{!objList.id}"
                                 class="slds-listbox__item">
                                 <span class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta"

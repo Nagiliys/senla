@@ -2,6 +2,14 @@
 public with sharing class OpportunityTriggerHandler_Test {
     @TestSetup
     static void setup(){
+        TriggersSwitch__c tr = new TriggersSwitch__c();
+        tr.Name='opportunityTrigger';
+        tr.isTriggerActive__c=true;
+        insert tr;
+        TriggersSwitch__c trcase = new TriggersSwitch__c();
+        trcase.Name='caseTrigger';
+        trcase.isTriggerActive__c=true;
+        insert trcase;
         Opportunity opp = new Opportunity(
             name = 'test opp',
             CloseDate=Date.today().addMonths(1),

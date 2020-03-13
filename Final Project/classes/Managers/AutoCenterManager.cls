@@ -8,7 +8,7 @@ public without sharing class AutoCenterManager {
     }
 
 
-    public static AutoCenter__c getAutoCentersById(Id id){
+    public static AutoCenter__c getAutoCenterById(Id id){
         return [select Name, latitude__c, longitude__c,  (select Name from staff__r) from AutoCenter__c where id=:id];
     }
 
