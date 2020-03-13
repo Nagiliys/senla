@@ -2,6 +2,14 @@
 public with sharing class CarsController_Test {
     @TestSetup
     public static void setup(){
+        TriggersSwitch__c tr = new TriggersSwitch__c();
+        tr.Name='opportunityTrigger';
+        tr.isTriggerActive__c=true;
+        insert tr;
+        TriggersSwitch__c trcase = new TriggersSwitch__c();
+        trcase.Name='caseTrigger';
+        trcase.isTriggerActive__c=true;
+        insert trcase;
         id rtDiller = Schema.sObjectType.AutoCenter__c.getRecordTypeInfosByName().get('Diller').getRecordTypeId();
         AutoCenter__c centerDiller = new AutoCenter__c(
             recordtypeid=rtDiller,
@@ -81,17 +89,10 @@ public with sharing class CarsController_Test {
 
     @isTest
     public static void testCreateOrder_1(){//create lead
-        String firstName = '1st'; 
-        String lastName='8th';
-        String phone = '123456';
-        String email = 'a@b.c';
-        AutoCenter__c center = [select Id from AutoCenter__c limit 1];
-        Product2 car = [select id from Product2 limit 1];
-        String idCenter = center.Id;
-        String idCar = car.Id;
+        CarsController.Wrapper wrapper = getWrapper();
 
         Test.starttest();
-        CarsController.createOrder(firstName, lastName, phone, email, idCenter, idCar);
+        CarsController.createOrder(wrapper);
         Test.stoptest();
 
         list<Lead> lds = [select id, email from Lead];
@@ -103,26 +104,19 @@ public with sharing class CarsController_Test {
 
     @isTest
     public static void testCreateOrder_2(){//update lead
-        String firstName = '1st'; 
-        String lastName='8th';
-        String phone = '123456';
-        String email = 'a@b.c';
-        AutoCenter__c center = [select Id from AutoCenter__c limit 1];
-        Product2 car = [select id from Product2 limit 1];
-        String idCenter = center.Id;
-        String idCar = car.Id;
+        CarsController.Wrapper wrapper = getWrapper();
         Lead ld = new Lead(
-            firstName=firstName,
-            lastName=lastName,
-            phone=phone,
-            email=email,
+            firstName=wrapper.firstName,
+            lastName=wrapper.lastName,
+            phone=wrapper.phone,
+            email=wrapper.email,
             company='Client',
             status='Open Not Contacted'
         );
         insert ld;
 
         Test.starttest();
-        CarsController.createOrder(firstName, lastName, phone, email, idCenter, idCar);
+        CarsController.createOrder(wrapper);
         Test.stoptest();
 
         List<Case> cases = [select Lead__c from case];
@@ -132,28 +126,33 @@ public with sharing class CarsController_Test {
 
     @isTest
     public static void testCreateOrder_3(){//update contact
-        String firstName = '1st'; 
-        String lastName='8th';
-        String phone = '123456';
-        String email = 'a@b.c';
-        AutoCenter__c center = [select Id from AutoCenter__c limit 1];
-        Product2 car = [select id from Product2 limit 1];
-        String idCenter = center.Id;
-        String idCar = car.Id;
+        CarsController.Wrapper wrapper = getWrapper();
         Contact ct = new Contact(
-            firstName=firstName,
-            lastName=lastName,
-            phone=phone,
-            email=email
+            firstName=wrapper.firstName,
+            lastName=wrapper.lastName,
+            phone=wrapper.phone,
+            email=wrapper.email
         );
         insert ct;
 
         Test.starttest();
-        CarsController.createOrder(firstName, lastName, phone, email, idCenter, idCar);
+        CarsController.createOrder(wrapper);
         Test.stoptest();
 
         List<Case> cases = [select ContactId from case];
         system.assertEquals(1, cases.size());
         system.assertEquals(ct.Id, cases[0].ContactId);
+    }
+    private static CarsController.Wrapper getWrapper(){
+        CarsController.Wrapper wrapper = CarsController.getWrapper();
+        wrapper.firstName = 'firstName';
+        wrapper.lastName = 'lastName';
+        wrapper.phone = '+1(800)12345';
+        wrapper.email = 'a@b.c';
+        AutoCenter__c center = [select Id from AutoCenter__c limit 1];
+        wrapper.idCenter = center.id;
+        Product2 car = [select id from Product2 limit 1];
+        wrapper.idCar = car.Id;
+        return wrapper;
     }
 }

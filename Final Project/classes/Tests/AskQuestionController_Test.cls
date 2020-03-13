@@ -2,6 +2,10 @@
 public with sharing class AskQuestionController_Test {
     @TestSetUp
     public static void setUp(){
+        TriggersSwitch__c trcase = new TriggersSwitch__c();
+        trcase.Name='caseTrigger';
+        trcase.isTriggerActive__c=true;
+        insert trcase;
         id rt = Schema.sObjectType.AutoCenter__c.getRecordTypeInfosByName().get('All').getRecordTypeId();
         AutoCenter__c center = new AutoCenter__c(
             recordtypeid=rt,
@@ -27,17 +31,10 @@ public with sharing class AskQuestionController_Test {
 
     @isTest
     public static void testCreateCase_1(){//test create lead
-        String firstName = 'firstName';
-        String lastName = 'lastName';
-        String phone = '+1(800)12345';
-        String email = 'a@b.c';
-        AutoCenter__c center = [select Id from AutoCenter__c limit 1];
-        String idCenter = center.id;
-        String subject = 'subject';
-        String description = 'description';
-
+        AskQuestionController.Wrapper wrapper = getWrapper();
+        
         Test.startTest();
-        AskQuestionController.createCase(firstName, lastName, phone, email, idCenter, subject, description);
+        AskQuestionController.createCase(wrapper);
         Test.stopTest();
 
         Lead ld = [select Id, Name from Lead limit 1];
@@ -50,27 +47,20 @@ public with sharing class AskQuestionController_Test {
 
     @isTest
     public static void testCreateCase_2(){//test update lead
-        String firstName = 'firstName';
-        String lastName = 'lastName';
-        String phone = '+1(800)12345';
-        String email = 'a@b.c';
-        AutoCenter__c center = [select Id from AutoCenter__c limit 1];
-        String idCenter = center.id;
-        String subject = 'subject';
-        String description = 'description';
+        AskQuestionController.Wrapper wrapper = getWrapper();
         lead ld = new lead(
-            FirstName=firstName,
-            lastName=lastName,
+            FirstName=wrapper.firstName,
+            lastName=wrapper.lastName,
             Company='Client',
-            Phone = phone,
-            Email=email,
+            Phone = wrapper.phone,
+            Email=wrapper.email,
             Status = 'Open - Not Contacted',
             CurrencyIsoCode='BYN'
         );
         insert ld;
 
         Test.startTest();
-        AskQuestionController.createCase(firstName, lastName, phone, email, idCenter, subject, description);
+        AskQuestionController.createCase(wrapper);
         Test.stopTest();
         
         Case cs = [select Id, employee__c, ContactId, Lead__c from case limit 1];
@@ -82,24 +72,17 @@ public with sharing class AskQuestionController_Test {
 
     @isTest
     public static void testCreateCase_3(){//test update contact
-        String firstName = 'firstName';
-        String lastName = 'lastName';
-        String phone = '+1(800)12345';
-        String email = 'a@b.c';
-        AutoCenter__c center = [select Id from AutoCenter__c limit 1];
-        String idCenter = center.id;
-        String subject = 'subject';
-        String description = 'description';
+        AskQuestionController.Wrapper wrapper = getWrapper();
         Contact ct = new Contact(
-            FirstName=firstName,
-            lastName=lastName,
-            Email=email,
+            FirstName=wrapper.firstName,
+            lastName=wrapper.lastName,
+            Email=wrapper.email,
             CurrencyIsoCode='BYN'
         );
         insert ct;
 
         Test.startTest();
-        AskQuestionController.createCase(firstName, lastName, phone, email, idCenter, subject, description);
+        AskQuestionController.createCase(wrapper);
         Test.stopTest();
 
         Case cs = [select Id, employee__c, ContactId, Lead__c from case limit 1];
@@ -107,5 +90,17 @@ public with sharing class AskQuestionController_Test {
         System.assertEquals(emp.Id, cs.employee__c);
         System.assertEquals(ct.Id, cs.ContactId);
         System.assertEquals(null, cs.Lead__c); 
+    }
+    private static AskQuestionController.Wrapper getWrapper(){
+        AskQuestionController.Wrapper wrapper = AskQuestionController.getWrapper();
+        wrapper.firstName = 'firstName';
+        wrapper.lastName = 'lastName';
+        wrapper.phone = '+1(800)12345';
+        wrapper.email = 'a@b.c';
+        AutoCenter__c center = [select Id from AutoCenter__c limit 1];
+        wrapper.idCenter = center.id;
+        wrapper.subject = 'subject';
+        wrapper.description = 'description';
+        return wrapper;
     }
 }

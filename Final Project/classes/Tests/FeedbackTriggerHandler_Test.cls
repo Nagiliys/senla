@@ -2,6 +2,10 @@
 public with sharing class FeedbackTriggerHandler_Test {
     @IsTest
     static void test_1(){
+        TriggersSwitch__c tr = new TriggersSwitch__c();
+        tr.Name='feedbackTrigger';
+        tr.isTriggerActive__c=true;
+        insert tr;
         Contact ct = new Contact(
             lastname='leadname'
         );

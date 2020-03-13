@@ -2,6 +2,10 @@
 public with sharing class CaseTriggerHandler_Test {
     @TestSetup
     static void setup(){
+        TriggersSwitch__c tr = new TriggersSwitch__c();
+        tr.Name='caseTrigger';
+        tr.isTriggerActive__c=true;
+        insert tr;
         employee__c emp = new employee__c(
             name='worker'
         );

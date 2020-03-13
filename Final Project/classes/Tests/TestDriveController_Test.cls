@@ -2,6 +2,10 @@
 public with sharing class TestDriveController_Test {
     @TestSetup
     public static void setup(){
+        TriggersSwitch__c trcase = new TriggersSwitch__c();
+        trcase.Name='caseTrigger';
+        trcase.isTriggerActive__c=true;
+        insert trcase;
         id rtDiller = Schema.sObjectType.AutoCenter__c.getRecordTypeInfosByName().get('Diller').getRecordTypeId();
         AutoCenter__c centerDiller = new AutoCenter__c(
             recordtypeid=rtDiller,
@@ -37,15 +41,10 @@ public with sharing class TestDriveController_Test {
 
     @isTest
     public static void testCreateCase_1(){//create lead
-        String firstName = '1st'; 
-        String lastName='8th';
-        String phone = '123456';
-        String email = 'a@b.c';
-        AutoCenter__c center = [select Id from AutoCenter__c limit 1];
-        String idCenter = center.Id;
+        TestDriveController.Wrapper wrapper = getWrapper();
 
         Test.starttest();
-        TestDriveController.createCase(firstName, lastName, phone, email, idCenter);
+        TestDriveController.createCase(wrapper);
         Test.stoptest();
 
         list<Lead> lds = [select id, email from Lead];
@@ -57,24 +56,19 @@ public with sharing class TestDriveController_Test {
 
     @isTest
     public static void testCreateCase_2(){//update lead
-        String firstName = '1st'; 
-        String lastName='8th';
-        String phone = '123456';
-        String email = 'a@b.c';
-        AutoCenter__c center = [select Id from AutoCenter__c limit 1];
-        String idCenter = center.Id;
+        TestDriveController.Wrapper wrapper = getWrapper();
         Lead ld = new Lead(
-            firstName=firstName,
-            lastName=lastName,
-            phone=phone,
-            email=email,
+            firstName=wrapper.firstName,
+            lastName=wrapper.lastName,
+            phone=wrapper.phone,
+            email=wrapper.email,
             company='Client',
             status='Open Not Contacted'
         );
         insert ld;
 
         Test.starttest();
-        TestDriveController.createCase(firstName, lastName, phone, email, idCenter);
+        TestDriveController.createCase(wrapper);
         Test.stoptest();
 
         List<Case> cases = [select Lead__c from case];
@@ -84,26 +78,31 @@ public with sharing class TestDriveController_Test {
 
     @isTest
     public static void testCreateCase_3(){//update contact
-        String firstName = '1st'; 
-        String lastName='8th';
-        String phone = '123456';
-        String email = 'a@b.c';
-        AutoCenter__c center = [select Id from AutoCenter__c limit 1];
-        String idCenter = center.Id;
+        TestDriveController.Wrapper wrapper = getWrapper();
         Contact ct = new Contact(
-            firstName=firstName,
-            lastName=lastName,
-            phone=phone,
-            email=email
+            firstName=wrapper.firstName,
+            lastName=wrapper.lastName,
+            phone=wrapper.phone,
+            email=wrapper.email
         );
         insert ct;
 
         Test.starttest();
-        TestDriveController.createCase(firstName, lastName, phone, email, idCenter);
+        TestDriveController.createCase(wrapper);
         Test.stoptest();
 
         List<Case> cases = [select ContactId from case];
         system.assertEquals(1, cases.size());
         system.assertEquals(ct.Id, cases[0].ContactId);
+    }
+    private static TestDriveController.Wrapper getWrapper(){
+        TestDriveController.Wrapper wrapper = TestDriveController.getWrapper();
+        wrapper.firstName = 'firstName';
+        wrapper.lastName = 'lastName';
+        wrapper.phone = '+1(800)12345';
+        wrapper.email = 'a@b.c';
+        AutoCenter__c center = [select Id from AutoCenter__c limit 1];
+        wrapper.idCenter = center.id;
+        return wrapper;
     }
 }
